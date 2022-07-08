@@ -1,0 +1,10 @@
+.headbar {
+    height: 100px;
+    background-color: rgb(43, 43, 43);
+    font-size: xx-large;
+    font-weight: 900;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
