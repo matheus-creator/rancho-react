@@ -42,7 +42,7 @@ const LoginBox = (props) => {
 
         try {
             const response = await fetch(
-                "http://ranchopontocom.herokuapp.com/api/users"
+                "https://ranchopontocom.herokuapp.com/api/users"
             );
             const json = await response.json();
 

@@ -52,7 +52,7 @@ class Votes extends React.Component {
     fetchData = async () => {
         try {
             const response = await fetch(
-                "http://ranchopontocom.herokuapp.com/api/vote"
+                "https://ranchopontocom.herokuapp.com/api/vote"
             );
             const json = await response.json();
 
@@ -85,7 +85,7 @@ class Votes extends React.Component {
 
         try {
             await axios.put(
-                `http://ranchopontocom.herokuapp.com/api/vote/${this.state.id}/`,
+                `https://ranchopontocom.herokuapp.com/api/vote/${this.state.id}/`,
                 data
             );
         } catch (e) {

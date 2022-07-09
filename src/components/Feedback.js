@@ -14,7 +14,7 @@ class Feedback extends React.Component {
         event.preventDefault();
         this.setState({ text: "" });
 
-        axios.post("http://ranchopontocom.herokuapp.com/api/feedbacks/", {
+        axios.post("https://ranchopontocom.herokuapp.com/api/feedbacks/", {
             message: this.state.text,
         });
     };

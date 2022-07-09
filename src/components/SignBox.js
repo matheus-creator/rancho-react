@@ -27,7 +27,7 @@ const SignBox = (props) => {
         bcryptjs.hash(state.password, 10, (err, hash) => {
             if (err) throw Error("Could not hash password.");
 
-            axios.post("http://ranchopontocom.herokuapp.com/api/users/", {
+            axios.post("https://ranchopontocom.herokuapp.com/api/users/", {
                 id: "a",
                 name: state.name,
                 email: state.email,
@@ -41,7 +41,7 @@ const SignBox = (props) => {
         setMyState({ text: "" });
 
         const response = await fetch(
-            "http://ranchopontocom.herokuapp.com/api/users"
+            "https://ranchopontocom.herokuapp.com/api/users"
         );
         const json = await response.json();
 

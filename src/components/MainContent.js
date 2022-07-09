@@ -40,7 +40,7 @@ class MainContent extends React.Component {
     fetchData = async () => {
         try {
             const response = await fetch(
-                "http://ranchopontocom.herokuapp.com/api/menus"
+                "https://ranchopontocom.herokuapp.com/api/menus"
             );
             const json = await response.json();
 
