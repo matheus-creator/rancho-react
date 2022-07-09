@@ -1,47 +1,59 @@
-import React from 'react';
-import VoteItem from './VoteItem';
-import Fade from 'react-reveal/Fade';
-import HeadBar from './HeadBar';
-import NavBar from './NavBar';
-import Footer from './Footer';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import './Votes.css';
+import React from "react";
+import VoteItem from "./VoteItem";
+import Fade from "react-reveal/Fade";
+import HeadBar from "./HeadBar";
+import NavBar from "./NavBar";
+import Footer from "./Footer";
+import axios from "axios";
+import { connect } from "react-redux";
+import "./Votes.css";
 
 class Votes extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {item1Name: '', item2Name: '', url1: '', url2: '', vote1Quantity: null, vote2Quantity: null, voteUsers: [], id: null};
+        this.state = {
+            item1Name: "",
+            item2Name: "",
+            url1: "",
+            url2: "",
+            vote1Quantity: null,
+            vote2Quantity: null,
+            voteUsers: [],
+            id: null,
+        };
     }
 
     checkValidVoter = () => {
-        if (this.props.currentUser === null) { 
-            return false
-        };
+        if (this.props.currentUser === null) {
+            return false;
+        }
         for (let i = 0; i < this.state.voteUsers.length; i++) {
             if (this.props.currentUser === this.state.voteUsers[i]) {
                 return false;
             }
         }
         return true;
-    }
+    };
 
     increaseVotesQuantity = (idV) => {
         if (idV === 1) {
-            this.setState({ vote1Quantity: this.state.vote1Quantity + 1 })
+            this.setState({ vote1Quantity: this.state.vote1Quantity + 1 });
+        } else {
+            this.setState({ vote2Quantity: this.state.vote2Quantity + 1 });
         }
-        else {
-            this.setState({ vote2Quantity: this.state.vote2Quantity + 1 })
-        }
-    }
+    };
 
     addUserThatHasVoted = () => {
-        this.setState({ voteUsers: [...this.state.voteUsers, this.props.currentUser] });
-    }
-    
+        this.setState({
+            voteUsers: [...this.state.voteUsers, this.props.currentUser],
+        });
+    };
+
     fetchData = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/vote');
+            const response = await fetch(
+                "http://ranchopontocom.herokuapp.com/api/vote"
+            );
             const json = await response.json();
 
             this.setState({
@@ -52,13 +64,12 @@ class Votes extends React.Component {
                 vote1Quantity: json[0].vote_quantity_1,
                 vote2Quantity: json[0].vote_quantity_2,
                 voteUsers: json[0].vote_users["users"],
-                id: json[0].id
+                id: json[0].id,
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
-    }
+    };
 
     postData = async () => {
         const data = {
@@ -69,38 +80,58 @@ class Votes extends React.Component {
             vote_quantity_1: this.state.vote1Quantity,
             vote_quantity_2: this.state.vote2Quantity,
             vote_users: { users: this.state.voteUsers },
-            id: this.state.id
+            id: this.state.id,
         };
 
         try {
-            await axios.put(`http://127.0.0.1:8000/api/vote/${this.state.id}/`, data);
-        }
-        catch(e) {
+            await axios.put(
+                `http://ranchopontocom.herokuapp.com/api/vote/${this.state.id}/`,
+                data
+            );
+        } catch (e) {
             console.log(e);
         }
-    }
-    
-    componentDidMount () {
+    };
+
+    componentDidMount() {
         this.fetchData();
     }
 
     render() {
         return (
             <div className="poll">
-                <HeadBar/>
-                <NavBar/>
+                <HeadBar />
+                <NavBar />
                 <Fade clear>
-                    <VoteItem checkVoter={this.checkValidVoter} increaseVote={this.increaseVotesQuantity} addUser={this.addUserThatHasVoted} voteQuantity={this.state.vote1Quantity} itemUrl={this.state.url1} itemName={this.state.item1Name} idV={1} postData={this.postData}/>
-                    <VoteItem checkVoter={this.checkValidVoter} increaseVote={this.increaseVotesQuantity} addUser={this.addUserThatHasVoted} voteQuantity={this.state.vote2Quantity} itemUrl={this.state.url2} itemName={this.state.item2Name} idV={2} postData={this.postData}/>
+                    <VoteItem
+                        checkVoter={this.checkValidVoter}
+                        increaseVote={this.increaseVotesQuantity}
+                        addUser={this.addUserThatHasVoted}
+                        voteQuantity={this.state.vote1Quantity}
+                        itemUrl={this.state.url1}
+                        itemName={this.state.item1Name}
+                        idV={1}
+                        postData={this.postData}
+                    />
+                    <VoteItem
+                        checkVoter={this.checkValidVoter}
+                        increaseVote={this.increaseVotesQuantity}
+                        addUser={this.addUserThatHasVoted}
+                        voteQuantity={this.state.vote2Quantity}
+                        itemUrl={this.state.url2}
+                        itemName={this.state.item2Name}
+                        idV={2}
+                        postData={this.postData}
+                    />
                 </Fade>
-                <Footer/>
+                <Footer />
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return { currentUser: state.currentUser};
+    return { currentUser: state.currentUser };
 };
 
 export default connect(mapStateToProps)(Votes);
